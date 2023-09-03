@@ -84,13 +84,16 @@ button.addEventListener("click", function() {
             `)
     } else {
         main.innerHTML = ""
-        const shuffled = options.sort(() => 0.5 - Math.random()).splice(0, 16).forEach((e, i) => main.insertAdjacentHTML("beforeend",
+        const shuffled = options.sort(() => 0.5 - Math.random()).splice(0, 32)
+        let count = 0;
+        for (i = 1; i <= 16; i++) {
+            main.insertAdjacentHTML("beforeend",
             `
-            <h3>${i+1 + ". LO " + e}</h3>
+            <h1>Question ${i}</h1>
+            <h3>${i + "a. LO " + shuffled[count]} (20 marks)</h3>
+            <textarea></textarea>
+            <h3>${i + "b. LO " + shuffled[count+1]} (30 marks)</h3>
             <textarea></textarea>
             `)
-        )
-    }
-
-}
-)
+            count += 2;
+    }}})

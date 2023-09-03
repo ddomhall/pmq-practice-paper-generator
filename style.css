@@ -1,7 +1,3 @@
-* {
-    outline: 1px solid black;
-}
-
 body {
     margin: auto;
     width: 80%;
@@ -14,14 +10,30 @@ header {
     margin-top: 10px;
 }
 
-label, button{
-    width: 20%;
+label, button {
+    min-width: fit-content;
 }
 
-select, textarea{
+select {
     width: 100%;
+}
+
+option {
+}
+
+textarea {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    border: 0 solid #000;
+    outline: 1px solid black;
 }
 
 h3 {
     margin-bottom: 0;
+}
+
+@media screen and (max-width: 400px) {
+header {
+    flex-direction: column;
 }

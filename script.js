@@ -1,8 +1,11 @@
 const button = document.querySelector("button")
 const select = document.querySelector("select")
 const main = document.querySelector("main")
+const timer = document.getElementById("timer")
+let [hours, minutes, seconds] = [0, 0, 0]
+let stopvalue = select.value
+let intervalid
 const options = [
-    "the full exam",
     "1.1 differentiate between types of permanent and temporary organisation structures (including functional, matrix, and project)",
     "1.2 explain the way in which an organisational breakdown structure is used to create a responsibility assignment matrix",
     "1.3 explain the role and key responsibilities of the project manager",
@@ -74,26 +77,63 @@ const options = [
 
 options.forEach((i) => select.insertAdjacentHTML("beforeend", `<option id="${i}">${i}</option>`))
 
+function reset() {
+    hours = 0;
+    minutes = 0;
+    seconds = 0;
+}
+
+function stopwatch() {
+    if ((select.value === "the full exam" && hours == 3) || (select.value != "the full exam" && minutes == 15) || (stopvalue != select.value)) {
+        timer.innerHTML = "00:00:00"
+        main.innerHTML = ""
+        clearInterval(intervalid);
+        return
+    }
+    seconds++;
+    if (seconds == 60) {
+        seconds = 0;
+        minutes++;
+        if (minutes == 60) {
+            minutes = 0;
+            hours++
+        }
+    }
+    let h = hours < 10 ? "0" + hours : hours;
+    let m = minutes < 10 ? "0" + minutes : minutes;
+    let s = seconds < 10 ? "0" + seconds : seconds;
+    timer.innerHTML = h + ":" + m + ":" + s
+    return
+}
+
 button.addEventListener("click", function() {
     if (select.value != "the full exam") {
         main.innerHTML = ""
         main.insertAdjacentHTML("beforeend",
             `
             <h3>${select.value}</h3>
-            <textarea></textarea>
+            <textarea rows="30"></textarea>
             `)
     } else {
         main.innerHTML = ""
-        const shuffled = options.sort(() => 0.5 - Math.random()).splice(0, 32)
+        const shuffled = options.sort(() => 0.5 - Math.random()).slice(0, 32)
         let count = 0;
         for (i = 1; i <= 16; i++) {
             main.insertAdjacentHTML("beforeend",
-            `
-            <h1>Question ${i}</h1>
-            <h3>${i + "a. LO " + shuffled[count]} (20 marks)</h3>
-            <textarea></textarea>
-            <h3>${i + "b. LO " + shuffled[count+1]} (30 marks)</h3>
-            <textarea></textarea>
-            `)
+                `
+                <h2>Question ${i}</h2>
+                <label>${i + "a. LO " + shuffled[count]} (20 marks)</label>
+                <textarea rows="20"></textarea>
+                <label>${i + "b. LO " + shuffled[count+1]} (30 marks)</label>
+                <textarea rows="30"></textarea>
+                `)
             count += 2;
-    }}})
+        }}
+    stopvalue = select.value
+    reset()
+    if (intervalid) {
+        clearInterval(intervalid);
+        intervalid = null
+    }
+    intervalid = setInterval(stopwatch, 1000)
+})

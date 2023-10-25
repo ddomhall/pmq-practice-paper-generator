@@ -10,10 +10,10 @@ let specopt
 
 const options = [
     "select",
-    "10 random questions from the book",
     "16 random questions from the book",
-    "10 random LO questions",
+    "10 random questions from the book",
     "16 random LO questions",
+    "10 random LO questions",
 ]
 
 const los = [
@@ -206,7 +206,23 @@ function stopwatch() {
 }
 
 button.addEventListener("click", function() {
-    if (select.value === "10 random questions from the book") {
+    if (select.value === "16 random questions from the book") {
+        main.innerHTML = ""
+        const bq162 = bq2.sort(() => 0.5 - Math.random()).slice(0, 16)
+        const bq163 = bq3.sort(() => 0.5 - Math.random()).slice(0, 16)
+        let count = 0;
+        for (i = 1; i <= 16; i++) {
+            main.insertAdjacentHTML("beforeend",
+                `
+                <h2>Question ${i}</h2>
+                <label>${i + "a. " + bq162[count]}</label>
+                <textarea rows="20" class="first"></textarea>
+                <label>${i + "b. " + bq163[count]}</label>
+                <textarea rows="30"></textarea>
+                `)
+            count ++;
+        }
+    } else if (select.value === "10 random questions from the book") {
         main.innerHTML = ""
         const bq102 = bq2.sort(() => 0.5 - Math.random()).slice(0, 10)
         const bq103 = bq3.sort(() => 0.5 - Math.random()).slice(0, 10)
@@ -222,27 +238,11 @@ button.addEventListener("click", function() {
                 `)
             count ++;
         }
-    } else if (select.value === "16 random questions from the book") {
+    } else if (select.value === "16 random LO questions") {
         main.innerHTML = ""
-        const bq162 = bq2.sort(() => 0.5 - Math.random()).slice(0, 16)
-        const bq163 = bq3.sort(() => 0.5 - Math.random()).slice(0, 16)
+        const shuffled = los.sort(() => 0.5 - Math.random()).slice(0, 32)
         let count = 0;
         for (i = 1; i <= 16; i++) {
-            main.insertAdjacentHTML("beforeend",
-                `
-                <h2>Question ${i}</h2>
-                <label>${i + "a. " + bq162[count]}</label>
-                <textarea rows="20"> class="first"</textarea>
-                <label>${i + "b. " + bq163[count]}</label>
-                <textarea rows="30"></textarea>
-                `)
-            count ++;
-        }
-    } else if (select.value === "10 random LO questions") {
-        main.innerHTML = ""
-        const shuffled = los.sort(() => 0.5 - Math.random()).slice(0, 20)
-        let count = 0;
-        for (i = 1; i <= 10; i++) {
             main.insertAdjacentHTML("beforeend",
                 `
                 <h2>Question ${i}</h2>
@@ -253,11 +253,11 @@ button.addEventListener("click", function() {
                 `)
             count += 2;
         }
-    } else if (select.value === "16 random LO questions") {
+    } else if (select.value === "10 random LO questions") {
         main.innerHTML = ""
-        const shuffled = los.sort(() => 0.5 - Math.random()).slice(0, 32)
+        const shuffled = los.sort(() => 0.5 - Math.random()).slice(0, 20)
         let count = 0;
-        for (i = 1; i <= 16; i++) {
+        for (i = 1; i <= 10; i++) {
             main.insertAdjacentHTML("beforeend",
                 `
                 <h2>Question ${i}</h2>

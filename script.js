@@ -5,7 +5,18 @@ const timer = document.getElementById("timer")
 let [hours, minutes, seconds] = [0, 0, 0]
 let stopvalue = select.value
 let intervalid
+let spec
+let specopt
+
 const options = [
+    "select",
+    "10 random questions from the book",
+    "16 random questions from the book",
+    "10 random LO questions",
+    "16 random LO questions",
+]
+
+const los = [
     "1.1 differentiate between types of permanent and temporary organisation structures (including functional, matrix, and project)",
     "1.2 explain the way in which an organisational breakdown structure is used to create a responsibility assignment matrix",
     "1.3 explain the role and key responsibilities of the project manager",
@@ -75,7 +86,93 @@ const options = [
     "11.2 differentiate between quality control and quality assurance",
 ]
 
-options.forEach((i) => select.insertAdjacentHTML("beforeend", `<option id="${i}">${i}</option>`))
+const bq2 = [
+    "Describe two benefits of having a project management office - 20 marks (10 marks each)",
+    "Select two of the following and explain how they support project management governance - 20 marks (10 marks each)<br>• Regulations<br>• Policies<br>• Procedures<br>• Delegated responsibilities",
+    "Explain two key differences between the responsibilities of the project manager and the sponsor in the deployment phase of the project management lifecycle – 20 marks (10 each)",
+    "Explain two reasons why projects are structured in phases in a linear project life cycle – 20 marks (10 marks each)",
+    "Explain two differences between a project lifecycle and an extended lifecycle – 20 marks (10 marks each)",
+    "Outline four ways that knowledge and information management can inform decision making in a project – 20 marks (5 marks each)",
+    "Outline four reasons why a programme would be used to deliver strategic change as opposed to using a project – 20 marks (5 marks each)",
+    "Explain two ways in which VUCA can be used to assess a project’s context – 20 marks (10 marks each)",
+    "Describe two situations where portfolio management may be appropriate – 20 marks (10 marks each)",
+    "Explain two ways in which SWOT can be used to assess a project’s context – 20 marks (10 marks each)",
+    "State four factors which can positively or negatively affect communication – 20 marks (5 marks each)",
+    "State one source of conflict between the project manager and each of the following within a project – 20 marks (5 marks each)<br>• User<br>• Sponsor<br>• Team<br>• Suppliers",
+    "Explain two ways how understanding BATNA and ZOPA can help plan and conduct negotiations – 20 marks (10 marks each)",
+    "Explain two reasons for analysing stakeholders before preparing a communication management plan – 20 marks (10 marks each)",
+    "Explain two reasons why it might be necessary to change leadership styles to ensure effective management during a project – 20 marks (10 marks each)",
+    "Describe two characteristics of an effective team – 20 marks (10 marks each)",
+    "Explain two factors which impact on the leadership of virtual teams – 20 marks (10 marks each)",
+    "Explain two reasons why it is important for the success of a project to manage stakeholder expectations – 20 marks (10 marks each)",
+    "Explain what is meant by each of the following benefits management steps – 20 marks (10 marks each)<br>• Definition<br>• Tracking",
+    "Explain how these investment appraisal techniques can be used to assess the validity of a project – 20 marks (10 marks each)<br>• Internal Rate of Return (IRR)<br>• Net Present Value (NPV)",
+    "Explain two ways in a linear lifecycle how developing a project management plan helps establish a deployment baseline – 20 marks (10 marks each)",
+    "In an iterative life cycle, explain two components of the project management plan that need to be considered when arriving at the deployment baseline – 20 marks (10 marks each)",
+    "Explain how two of the following are used to produce estimates – 20 marks (10 marks each)<br>• Parametric<br>• Analogous<br>• Delphi",
+    "Explain two ways a project manager would use earned value management outputs to update project plans – 20 marks (10 marks each)",
+    "Explain two different types of contingency in a project – 20 marks (10 marks each)",
+    "Interpret the Earned Value information provided below for a project.  Given the likely schedule impact and cost estimation at completion, propose two practical responses the project manager could take and a justification for each (20 marks)<br>A project has a budget at completion of £120,000 and is planned to be completed in 10 months. At the end of month 5:<br>• Task Planned budget: £60,000<br>• Actual cost:£ 40,000<br>• Earned value: £50,000<br>• SPI = 0.83<br>• CPI = 1.25<br>• EAC = £96k<br>• Planned time/SPI = 12 months",
+    "Explain two reasons for contingency planning in a project – 20 marks (10 marks each)",
+    "Explain two breakdown structures that are used to develop the scope of a project – 20 marks (10 marks each)",
+    "Explain two activities in a configuration management process that help to manage the scope of a project – 20 marks (10 marks each)",
+    "Explain two differences between critical path and critical chain scheduling techniques – 20 marks (10 marks each)",
+    "Describe how two different categories of resource can be allocated to a project following a linear lifecycle – 20 marks (10 marks each)",
+    "Explain two differences in how funding is planned to be allocated for linear and iterative lifecycles – 20 marks (10 marks each)",
+    "Explain two elements that differ when cost planning for linear and iterative lifecycles – 20 marks (10 marks each)",
+    "Explain two differences between fixed-price and cost-plus fee supplier reimbursement methods – 20 marks (10 marks each)",
+    "Explain two differences between two different types of contractual relationships – 20 marks (10 marks each)",
+    "Explain two responses that a project manager may take to proactively respond to a negative risk – 20 marks (10 marks each)",
+    "Explain two reasons for escalating issues – 20 marks (10 marks each)",
+    "Explain two responses that a project manager may take to proactively respond to a positive risk – 20 marks (10 marks each)",
+    "Explain two purposes of quality planning for a project – 20 marks (10 marks each)",
+    "Explain two differences in quality control activities and quality assurance activities in the deployment phase of a project lifecycle – 20 marks (10 marks each)"
+]
+
+const bq3 = [
+    "Explain three differences between the following types of organisational structure – 30 marks (10 marks each)<br>• Functional<br>• Matrix",
+    "Select three of the following and describe their roles throughout a project - 30 marks (10 marks each)<br>• Users<br>• Project team members<br>• Project steering group<br>• Product owner",
+    "Describe three functions of a project management office – 30 marks (10 marks each)",
+    "Explain three reasons why a project may close early – 30 marks (10 each)",
+    "Explain three differences between linear and iterative lifecycles – 30 marks (10 marks each)",
+    "Explain the benefits of conducting each of the following reviews throughout the lifecycle - 30 marks (10 marks each)<br>• Decision gates<br>• Benefits reviews<br>• Audits",
+    "Explain three ways in which PESTLE can be used to assess a project’s context – 30 marks (10 marks each)",
+    "Explain three ways in which failure to comply with laws and regulations can impact on project delivery – 30 marks (10 marks each)",
+    "Explain three differences between projects and business as usual – 30 marks (10 marks each)",
+    "Explain how complying with three of the following can impact a project - 30 marks (10 marks each)<br>• Governance<br>• Sustainability<br>• Working conditions<br>• Risk management",
+    "Explain three benefits of a communication plan to a project – 30 marks (10 marks each)",
+    "Explain three ways in which conflicts can be addressed – 30 marks (10 marks each)",
+    "Explain one benefit of each of the following sections of a communication management plan – 30 marks (10 marks each)<br>• Responsibilities for defining communication<br>• Timing<br>• Feedback mechanism",
+    "Using a recognised motivational model, explain three ways how leadership impacts on team performance – 30 marks (10 marks each)",
+    "Using a recognised model, explain three factors which influence the creation, development and leadership of teams – 30 marks (10 marks each)",
+    "Using a recognised model, explain how three aspects of leadership impact on the motivation of a team– 30 marks (10 marks each)",
+    "Explain three reasons how stakeholder analysis can assist in influencing and engaging stakeholders – 30 marks (10 marks each)",
+    "Explain one reason why a business case is important in each of the following phases of a project lifecycle – 30 marks (10 marks each)<br>• Concept phase<br>• Definition phase<br>• Deployment phase",
+    "Explain three reasons why it is important to have a business case – 30 marks (10 marks each)",
+    "Describe three distinct plans in a project management plan – 30 marks (10 marks each)",
+    "Explain three reasons for producing a project management plan – 30 marks (10 marks each)",
+    "Explain three reasons for re-estimating through the project lifecycle – 30 marks (10 marks each)",
+    "Explain three reasons for contingency planning in projects – 30 marks (10 marks each)",
+    "Explain three of the following steps in an information management process – 30 marks (10 marks each)<br>• Collection<br>• Storage<br>• Dissemination<br>• Archiving",
+    "Explain three aspects of a project that would typically be reported on – 30 marks (10 marks each)",
+    "Explain three benefits of using the interpretation of earned value data – 30 marks (10 marks each)",
+    "Explain three steps in a requirements management process that help to establish the scope of a project – 30 marks (10 marks each)",
+    "Explain three steps in a change control process – 30 marks (10 marks each)",
+    "Describe three activities when creating and/or maintaining a schedule – 30 marks (10 marks each)",
+    "Describe three considerations that need to be considered when allocating resources to a project schedule following a linear lifecycle – 30 marks (10 marks each)",
+    "Explain three different considerations that need to be made when deciding to use resource smoothing and resource levelling – 30 marks (10 marks each)",
+    "Describe three things that need to be considered when maintaining a schedule – 30 marks (10 marks each)",
+    "Explain three steps in a competitive supplier selection process for a project – 30 marks (10 marks each)",
+    "Explain the purpose of three distinct elements of a procurement strategy– 30 marks (10 marks each)",
+    "Explain three stages in a risk management process – 30 marks (10 marks each)",
+    "Explain three benefits of a project risk management process – 30 marks (10 marks each)",
+    "Explain three aspects of an issue management process – 30 marks (10 marks each)",
+    "Explain three differences between quality assurance and quality control for a project – 30 marks (10 marks each)",
+    "Explain three considerations a project manager takes into account when planning quality for a project – 30 marks (10 marks each)"
+]
+
+const allbqs = bq2.concat(bq3)
+options.forEach((i) => select.insertAdjacentHTML("beforeend", `<option>${i}</option>`))
 
 function reset() {
     hours = 0;
@@ -84,9 +181,11 @@ function reset() {
 }
 
 function stopwatch() {
-    if ((select.value === "the full exam" && hours == 3) || (select.value != "the full exam" && minutes == 15) || (stopvalue != select.value)) {
+    if (stopvalue != select.value) {
         timer.innerHTML = "00:00:00"
-        main.innerHTML = ""
+        main.innerHTML = `
+            <div style="text-align: center; padding: 20px 0px;">Select an option from the dropdown and click Generate<br>The timer will start immediately and reset if the selection changes</div>
+        `
         clearInterval(intervalid);
         return
     }
@@ -107,28 +206,72 @@ function stopwatch() {
 }
 
 button.addEventListener("click", function() {
-    if (select.value != "the full exam") {
+    if (select.value === "10 random questions from the book") {
         main.innerHTML = ""
-        main.insertAdjacentHTML("beforeend",
-            `
-            <h3>${select.value}</h3>
-            <textarea rows="30"></textarea>
-            `)
-    } else {
+        const bq102 = bq2.sort(() => 0.5 - Math.random()).slice(0, 10)
+        const bq103 = bq3.sort(() => 0.5 - Math.random()).slice(0, 10)
+        let count = 0;
+        for (i = 1; i <= 10; i++) {
+            main.insertAdjacentHTML("beforeend",
+                `
+                <h2>Question ${i}</h2>
+                <label>${i + "a. " + bq102[count]}</label>
+                <textarea rows="20" class="first"></textarea>
+                <label>${i + "b. " + bq103[count]}</label>
+                <textarea rows="30"></textarea>
+                `)
+            count ++;
+        }
+    } else if (select.value === "16 random questions from the book") {
         main.innerHTML = ""
-        const shuffled = options.sort(() => 0.5 - Math.random()).slice(0, 32)
+        const bq162 = bq2.sort(() => 0.5 - Math.random()).slice(0, 16)
+        const bq163 = bq3.sort(() => 0.5 - Math.random()).slice(0, 16)
+        let count = 0;
+        for (i = 1; i <= 16; i++) {
+            main.insertAdjacentHTML("beforeend",
+                `
+                <h2>Question ${i}</h2>
+                <label>${i + "a. " + bq162[count]}</label>
+                <textarea rows="20"> class="first"</textarea>
+                <label>${i + "b. " + bq163[count]}</label>
+                <textarea rows="30"></textarea>
+                `)
+            count ++;
+        }
+    } else if (select.value === "10 random LO questions") {
+        main.innerHTML = ""
+        const shuffled = los.sort(() => 0.5 - Math.random()).slice(0, 20)
+        let count = 0;
+        for (i = 1; i <= 10; i++) {
+            main.insertAdjacentHTML("beforeend",
+                `
+                <h2>Question ${i}</h2>
+                <label>${i + "a. LO " + shuffled[count]} (20 marks)</label>
+                <textarea rows="20" class="first"></textarea>
+                <label>${i + "b. LO " + shuffled[count+1]} (30 marks)</label>
+                <textarea rows="30"></textarea>
+                `)
+            count += 2;
+        }
+    } else if (select.value === "16 random LO questions") {
+        main.innerHTML = ""
+        const shuffled = los.sort(() => 0.5 - Math.random()).slice(0, 32)
         let count = 0;
         for (i = 1; i <= 16; i++) {
             main.insertAdjacentHTML("beforeend",
                 `
                 <h2>Question ${i}</h2>
                 <label>${i + "a. LO " + shuffled[count]} (20 marks)</label>
-                <textarea rows="20"></textarea>
+                <textarea rows="20" class="first"></textarea>
                 <label>${i + "b. LO " + shuffled[count+1]} (30 marks)</label>
                 <textarea rows="30"></textarea>
                 `)
             count += 2;
-        }}
+        }
+    } else {
+        main.innerHTML = ""
+        return
+    }
     stopvalue = select.value
     reset()
     if (intervalid) {

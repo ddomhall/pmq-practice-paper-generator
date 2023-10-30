@@ -7,9 +7,9 @@ let stopvalue = select.value
 let intervalid
 let spec
 let specopt
+const placeholder = `<div style="text-align: center; padding: 20px 0px;">Select an option from the dropdown and click Generate<br>The timer will start immediately and reset if the selection changes</div>`
 
 const options = [
-    "select",
     "16 random questions from the book",
     "10 random questions from the book",
     "16 random LO questions",
@@ -183,9 +183,7 @@ function reset() {
 function stopwatch() {
     if (stopvalue != select.value) {
         timer.innerHTML = "00:00:00"
-        main.innerHTML = `
-            <div style="text-align: center; padding: 20px 0px;">Select an option from the dropdown and click Generate<br>The timer will start immediately and reset if the selection changes</div>
-        `
+        main.innerHTML = placeholder
         clearInterval(intervalid);
         return
     }
@@ -269,7 +267,7 @@ button.addEventListener("click", function() {
             count += 2;
         }
     } else {
-        main.innerHTML = ""
+        main.innerHTML = placeholder
         return
     }
     stopvalue = select.value

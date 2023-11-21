@@ -71,7 +71,7 @@ footer {
     border-top: 1px solid #FFF;
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 1010px) {
     body {
         width: 90%;
     }
@@ -83,6 +83,7 @@ footer {
 
     button {
         width: 100%;
+        max-width: 360px;
     }
 
     main {
